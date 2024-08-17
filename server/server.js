@@ -14,6 +14,7 @@ const { errorMiddleware } = require("./middleware/error");
 const registerRouter = require("./routes/registerRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const TestList = require("./models/testlist");
+const Laboratory = require("./models/labortary")
 const authenticate = require("./middleware/authenticate");
 
 const app = express();
@@ -90,15 +91,7 @@ app.get('/labtests', async (req, res) => {
 });
 
 
-app.get('/labs', async (req, res) => {
-  try {
-    const tests = await Laboratory.find(); // Fetch all tests from the database
-    res.status(200).json(tests);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
+
 
 app.get('/mytests', authenticate, async (req, res) => {
   try {
@@ -154,6 +147,51 @@ app.put('/tests/:id', async (req,res) =>{
   }
 
 })
+
+
+
+
+app.get('/labs', async (req, res) => {
+  try {
+    const labs = await Laboratory.find(); 
+    res.status(200).json(labs);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+app.get('/api/tests/:labId', async (req, res) => {
+  const { labId } = req.params;
+  console.log(labId,'lad idd')
+  try {
+      const tests = await TestList.find({ owner: labId });
+      console.log(tests)
+      return res.status(200).json(tests)
+      // res.json(tests); 
+  } catch (error) {
+      console.error('Error fetching tests:', error);
+      res.status(500).json({ message: 'Error fetching tests' });
+  }
+});
+
+app.get('/booktests/:id', async (req, res) => {
+  try {
+      const test = await TestList.findById(req.params.id);
+      if (!test) {
+          return res.status(404).json({ message: 'Test not found' });
+      }
+      return res.status(200).json(test);
+  } catch (error) {
+      console.error('Error fetching test:', error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
+
 
 
 app.listen(port, () => {

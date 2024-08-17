@@ -18,6 +18,8 @@ import TestListing from './UI/pages/TestListing.jsx';
 import LabTests from './UI/pages/labTests.jsx';
 import MyLabTests from './UI/pages/MyLabTests.jsx';
 import UpdateTests from './UI/pages/UpdateTests.jsx';
+import LaboratoryTests from './UI/pages/laboratoryTests.jsx';
+import TestBookingForm from './UI/pages/TestBookingForm.jsx';
 
 
 
@@ -118,6 +120,26 @@ function App() {
                   <>
                       <PageTitle title="Update Tests |" />
                       <UpdateTests />
+                  </>
+              }
+          />
+
+          <Route
+              path='/laboratoryTests/:labId'
+              element={
+                  <>
+                      <PageTitle title=" Tests |" />
+                      <LaboratoryTests />
+                  </>
+              }
+          />
+
+          <Route
+              path='/TestBooking/:TestId'
+              element={
+                  <>
+                      <PageTitle title=" Tests Booking Form |" />
+                      <TestBookingForm/>
                   </>
               }
           />

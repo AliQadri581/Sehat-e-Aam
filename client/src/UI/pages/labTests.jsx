@@ -1,104 +1,121 @@
+
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import Header from '../components/Header';
+import { useNavigate } from 'react-router-dom';
 
 const LabTests = () => {
-    const [tests, setTests] = useState([]);
+    const [labs, setLabs] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-       
-        const fetchTests = async () => {
+        const fetchLabs = async () => {
             try {
-                const response = await axios.get('http://localhost:4040/labtests'); 
-                setTests(response.data);
+                const response = await fetch('http://localhost:4040/labs');
+                const data = await response.json();
+                setLabs(data);
             } catch (error) {
-                console.error('Error fetching tests:', error);
+                console.error('Error fetching labs:', error);
             }
         };
 
-        fetchTests();
+        fetchLabs();
     }, []);
 
+    const handleTests = (labId) => {
+        navigate(`/laboratoryTests/${labId}`);
+    };
+
     return (
-        <div>
-            <Header/>
-            <h1 className='text-5xl font-bold text-black text-center mt-7'>Laboratory Tests</h1>
+        <>
+            <Header />
+            <style>
+                {`
+                    .card {
+                        width: 290px;
+                        height: 354px;
+                        border-radius: 20px;
+                        background: #f5f5f5;
+                        position: relative;
+                        padding: 1.8rem;
+                        border: 2px solid #c3c6ce;
+                        transition: 0.5s ease-out;
+                        overflow: visible;
+                        margin-left: 120px;
+                        margin-top: 25px;
+                    }
 
-            <style>{`
-                .flip-card {
-                    background-color: transparent;
-                    width: 290px;
-                    height: 250px;
-                    perspective: 1000px;
-                    font-family: sans-serif;
-                    display: inline-block;
-                    margin: 10px;
-                }
+                    .card-details {
+                        color: black;
+                        height: 100%;
+                        gap: .5em;
+                        display: grid;
+                        place-content: center;
+                    }
 
-                .title {
-                    font-size: 1.5em;
-                    font-weight: 900;
-                    text-align: center;
-                    margin: 0;
-                }
+                    .card-button {
+                        transform: translate(-50%, 125%);
+                        width: 60%;
+                        border-radius: 1rem;
+                        border: none;
+                        background-color: rgba(244, 67, 54);
+                        color: #fff;
+                        font-size: 1rem;
+                        padding: .5rem 1rem;
+                        position: absolute;
+                        left: 50%;
+                        bottom: 0;
+                        opacity: 0;
+                        transition: 0.3s ease-out;
+                    }
 
-                .flip-card-inner {
-                    position: relative;
-                    width: 100%;
-                    height: 100%;
-                    text-align: center;
-                    transition: transform 0.8s;
-                    transform-style: preserve-3d;
-                }
+                    .text-body {
+                        color: rgb(134, 134, 134);
+                    }
 
-                .flip-card:hover .flip-card-inner {
-                    transform: rotateY(180deg);
-                }
+                    .text-title {
+                        font-size: 1.5em;
+                        font-weight: bold;
+                    }
 
-                .flip-card-front, .flip-card-back {
-                    box-shadow: 0 8px 14px 0 rgba(0,0,0,0.2);
-                    position: absolute;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    width: 100%;
-                    height: 100%;
-                    -webkit-backface-visibility: hidden;
-                    backface-visibility: hidden;
-                    border: 1px solid coral;
-                    border-radius: 1rem;
-                }
+                    .card:hover {
+                        border-color: rgba(244, 67, 54);
+                        box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.25);
+                    }
 
-                .flip-card-front {
-                    background: linear-gradient(120deg, bisque 60%, rgb(255, 231, 222) 88%, rgb(255, 211, 195) 40%, rgba(255, 127, 80, 0.603) 48%);
-                    color: coral;
-                }
-
-                .flip-card-back {
-                    background: linear-gradient(120deg, rgb(255, 174, 145) 30%, coral 88%, bisque 40%, rgb(255, 185, 160) 78%);
-                    color: white;
-                    transform: rotateY(180deg);
-                }
-            `}</style>
-
-            <div className="flex flex-wrap justify-center">
-                {tests.map(test => (
-                    <div key={test._id} className="flip-card">
-                        <div className="flip-card-inner">
-                            <div className="flip-card-front">
-                                <p className="title">{test.testName}</p>
-                                
-                            </div>
-                            <div className="flip-card-back">
-                                <p className="title">{test.testType}</p>
-                                <p>{test.testPrice}</p>
-                            </div>
+                    .card:hover .card-button {
+                        transform: translate(-50%, 50%);
+                        opacity: 1;
+                    }
+                `}
+            </style>
+            <div>
+                {labs.map((lab) => (
+                    <div className="card" key={lab._id}>
+                        <div className="card-details">
+                            <svg
+                                version="1.0"
+                                xmlns="http://www.w3.org/2000/svg"
+                                xmlSpace="preserve"
+                                viewBox="0 0 100 100"
+                                width="3.5em"
+                                height="4.5em"
+                                fill="currentColor"
+                                className="mr-1 text-[rgba(244,67,54)]"
+                            >
+                                <path d="M90 42.301 76.666 19.209l-13.334 7.699V10H36.667v16.908l-13.335-7.699L10 42.301 23.332 50 10 57.698l13.331 23.093 13.335-7.698V90h26.666V73.093l13.334 7.698L90 57.698 76.666 50 90 42.301zm-9.107 17.84-6.666 11.543-17.561-10.138v21.787H43.332V61.546L25.774 71.684l-6.666-11.543L36.667 50 19.108 39.863l6.666-11.549 17.558 10.14V16.667h13.334v21.787l17.561-10.14 6.666 11.549L63.332 50l17.561 10.141z" />
+                            </svg>
+                            <p className="text-title">{lab.laboratoryName}</p>
+                            <p className="text-title">{lab.laboratoryAddress}</p>
+                            <p className="text-title">{lab.contactPersonName}</p>
                         </div>
+                        <button className="card-button" onClick={() => handleTests(lab._id)}>Tests</button>
                     </div>
                 ))}
             </div>
-        </div>
+        </>
     );
 }
 
 export default LabTests;
+
+

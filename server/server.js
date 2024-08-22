@@ -9,7 +9,7 @@ const cookieParser = require('cookie-parser');
 const jwt = require("jsonwebtoken");
 
 const { errorMiddleware } = require("./middleware/error");
-
+const TestBook =require('./models/testbook')
 // const userRouter = require("./routes/user");
 const registerRouter = require("./routes/registerRoutes");
 const adminRoutes = require("./routes/adminRoutes");
@@ -186,6 +186,63 @@ app.get('/booktests/:id', async (req, res) => {
   } catch (error) {
       console.error('Error fetching test:', error);
       res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
+app.post('/bookingtests', async (req, res) => {
+  try {
+  
+    const data = req.body;
+    console.log(data)
+    const { testName, testType, testPrice,LabID,TestID} = data;
+
+    console.log(req.body, 'hello');
+    let username = req.cookies['jwt'];
+    const decoded = jwt.verify(username, process.env.JWT_SECRET);
+    console.log(decoded);
+      const newTestBook = new TestBook({
+          testName:testName,
+          testType:testType,
+          testPrice:testPrice,
+          PatientID: decoded.id,
+          LabID: LabID,
+          TestID: TestID,
+  
+      });
+      await newTestBook.save();
+
+      res.status(201).json({ message: 'Test booked successfully!' });
+  } catch (error) {
+      console.error('Error booking test:', error);
+      res.status(500).json({ error: 'Failed to book the test' });
+  }
+});
+
+
+app.get('/mypatienttests', authenticate, async (req, res) => {
+  try {
+    const Bookedtests = await TestBook.find({ PatientID: req.userId }); 
+    res.status(200).json(Bookedtests);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.get('/lab/bookings', async (req, res) => {
+  try {
+      const token = req.cookies['jwt'];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const labId = decoded.id;
+
+      const bookings = await TestBook.find({ LabID: labId });
+
+      res.status(200).json(bookings);
+  } catch (error) {
+      console.error('Error fetching lab bookings:', error);
+      res.status(500).json({ error: 'Failed to fetch lab bookings' });
   }
 });
 

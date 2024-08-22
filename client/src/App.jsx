@@ -20,6 +20,8 @@ import MyLabTests from './UI/pages/MyLabTests.jsx';
 import UpdateTests from './UI/pages/UpdateTests.jsx';
 import LaboratoryTests from './UI/pages/laboratoryTests.jsx';
 import TestBookingForm from './UI/pages/TestBookingForm.jsx';
+import Patienttest from './UI/pages/patienttest.jsx';
+import LabBookingReservation from './UI/pages/LabBookingReservation.jsx';
 
 
 
@@ -135,11 +137,31 @@ function App() {
           />
 
           <Route
-              path='/TestBooking/:TestId'
+              path='/TestBooking'
               element={
                   <>
                       <PageTitle title=" Tests Booking Form |" />
                       <TestBookingForm/>
+                  </>
+              }
+          />
+
+          <Route
+              path='/PatientTests'
+              element={
+                  <>
+                      <PageTitle title=" Patients Tests |" />
+                      <Patienttest/>
+                  </>
+              }
+          />
+
+           <Route
+              path='/labtestReservations'
+              element={
+                  <>
+                      <PageTitle title=" lab tests reservations |" />
+                      <LabBookingReservation/>
                   </>
               }
           />

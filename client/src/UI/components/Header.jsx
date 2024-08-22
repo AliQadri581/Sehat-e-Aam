@@ -309,13 +309,37 @@ const Header = () => {
 
 
               {user && user.role === 'Patient' && (
+                <>
                 <Link
                   to={'/labtest'}
                   className="hover:text-gray-400 lg:p-4 py-2 text-gray-500"
                 >
                   Laboratory
                 </Link>
+
+                <Link
+                  to={'/PatientTests'}
+                  className="hover:text-gray-400 lg:p-4 py-2 text-gray-500"
+                >
+                  My Tests
+                </Link>
+                </>
               )}
+
+              {user && user.role === 'Laboratory' && (
+                <>
+            
+                <Link
+                   to={'/labtestReservations'}
+                  className="hover:text-gray-400 lg:p-4 py-2 text-gray-500"
+                   >
+                   My Bookings
+                   </Link>
+                </>
+              )}
+
+
+
               {!user && (
                 <button
                   onClick={adminLogin}

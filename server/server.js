@@ -16,6 +16,10 @@ const adminRoutes = require("./routes/adminRoutes");
 const TestList = require("./models/testlist");
 const Laboratory = require("./models/labortary")
 const authenticate = require("./middleware/authenticate");
+const medlist = require("./models/medlist");
+const { authenticator } = require("./middleware/authenticator");
+const pharmacy = require("./models/pharmacy");
+const MedBook = require("./models/MedBook");
 
 const app = express();
 app.use(cookieParser());
@@ -246,6 +250,164 @@ app.get('/lab/bookings', async (req, res) => {
   }
 });
 
+
+
+app.post('/MedListing', async (req, res) => {
+  try {
+    const data = req.body;
+    console.log(data)
+    const { medName,medgrams,medPrice} = data;
+    
+    if (!medName || !medgrams || !medPrice) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
+
+    console.log(req.body, 'hello');
+    let username = req.cookies['jwt'];
+    const decoded = jwt.verify(username, process.env.JWT_SECRET);
+
+    console.log(username,'username')
+  
+    const newMed = await medlist.create({ 
+     Pharmacyowner:decoded.id,
+     medName:medName,
+     medgrams:medgrams,
+     medPrice:medPrice
+     });
+    console.log(newMed,'new med');
+
+   
+   return res.status(201).json({ message: 'Med created successfully', med: newMed });
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.get('/mymeds',authenticate, async (req, res) => {   
+  try {
+    const meds = await medlist.find({ Pharmacyowner: req.userId }); 
+    res.status(200).json(meds);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.delete('/mymeds/:id', authenticate, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await medlist.deleteOne({ _id: id, Pharmacyowner: req.userId });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'Medicine not found' });
+    }
+
+    res.status(200).json({ message: 'Medicine deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting medicine:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+app.get('/mymeds/:id', async (req,res) =>{ 
+  try{
+    const med = await medlist.findById(req.params.id);
+    if(!med){
+      return res.status(404).json({message : 'med is not found'})
+    }
+    res.json(med);
+  }
+  catch(e){
+    res.status(500).json({message: 'internal server error'});
+  }
+})
+
+app.put('/mymed/:id', async (req,res) =>{
+  const {medName, medgrams, medPrice} = req.body;
+  try{
+    const med = await medlist.findByIdAndUpdate(
+      req.params.id,
+      {medName, medgrams, medPrice},
+      {new:true}
+    );
+    if(!med){
+      return res.status(404).json({ message: 'med not found' });
+    }
+    res.json(med);
+  }
+  catch(e){
+    res.status(500).json({ message: 'Server error' });
+  }
+
+})
+
+app.get('/Pharms', async (req, res) => {
+  try {
+    const Pharmacies = await pharmacy.find(); 
+    res.status(200).json(Pharmacies);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.get('/api/meds/:medId', async (req, res) => {
+  const { medId } = req.params;
+  console.log(medId,'idd')
+  try {
+      const meds = await medlist.find({ Pharmacyowner: medId });
+      console.log(meds)
+      return res.status(200).json(meds)
+  } catch (error) {
+      console.error('Error fetching meds:', error);
+      res.status(500).json({ message: 'Error fetching meds' });
+  }
+});
+
+app.get('/PharmacyMeds/:id', async (req, res) => {
+  try {
+      const meds = await medlist.findById(req.params.id);
+      if (!meds) {
+          return res.status(404).json({ message: 'Test not found' });
+      }
+      return res.status(200).json(meds);
+  } catch (error) {
+      console.error('Error fetching test:', error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.post('/bookingmeds', async (req, res) => {
+  try {
+  
+    const data = req.body;
+    console.log(data)
+    const {medName, medgrams, medPrice,Pharmacyowner,MedID,} = data;
+
+    console.log(req.body, 'hello');
+    let username = req.cookies['jwt'];
+    const decoded = jwt.verify(username, process.env.JWT_SECRET);
+    console.log(decoded);
+      const newMedBook = new MedBook({
+          medName:medName,
+          medgrams:medgrams,
+          medPrice:medPrice,
+          PatientID: decoded.id,
+          Pharmacyowner: Pharmacyowner,
+          MedID: MedID,
+  
+      });
+      await newMedBook.save();
+
+      res.status(201).json({ message: 'Med booked successfully!' });
+  } catch (error) {
+      console.error('Error booking test:', error);
+      res.status(500).json({ error: 'Failed to book the test' });
+  }
+});
 
 
 

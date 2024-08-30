@@ -1,7 +1,11 @@
 const jwt = require("jsonwebtoken");
+const cookieParser = require('cookie-parser');
+
 
 const authenticate = (req, res, next) => {
   const token = req.cookies['jwt'];
+  console.log(token)
+  
 
   if (!token) {
     return res.status(401).json({ message: 'No token provided' });

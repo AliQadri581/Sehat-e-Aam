@@ -323,6 +323,15 @@ const Header = () => {
                 >
                   My Tests
                 </Link>
+
+                <Link
+                  to={'/Pharmacies'}
+                  className="hover:text-gray-400 lg:p-4 py-2 text-gray-500"
+                >
+                  Pharmacies
+                </Link>
+
+                
                 </>
               )}
 
@@ -383,6 +392,28 @@ const Header = () => {
                      
 
                         
+                    )}
+
+
+
+                    {user.role === 'pharmacy' && (
+                      <>
+                       <Link
+                          to={'/medlisting'}
+                          className="bg-[rgba(244,67,54)] inline-block px-6 py-2 rounded text-white font-bold mr-3"
+                          >
+                            List Medicines
+                        </Link>
+
+
+                        <Link
+                          to={'/MyMeds'}
+                          className="bg-[rgba(244,67,54)] inline-block px-6 py-2 rounded text-white font-bold mr-3"
+                          >
+                            My Medicines
+                        </Link>
+
+                      </>
                     )}
 
                     <button

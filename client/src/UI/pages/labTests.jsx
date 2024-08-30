@@ -1,164 +1,11 @@
 
-// import React, { useEffect, useState } from 'react';
-// import Header from '../components/Header';
-// import { useNavigate } from 'react-router-dom';
-
-// const LabTests = () => {
-//     const [labs, setLabs] = useState([]);
-//     const navigate = useNavigate();
-
-//     useEffect(() => {
-//         const fetchLabs = async () => {
-//             try {
-//                 const response = await fetch('http://localhost:4040/labs');
-//                 const data = await response.json();
-//                 setLabs(data);
-//             } catch (error) {
-//                 console.error('Error fetching labs:', error);
-//             }
-//         };
-
-//         fetchLabs();
-//     }, []);
-
-
-    
-
-//     const handleTests = (labId) => {
-//         navigate(`/laboratoryTests/${labId}`);
-//     };
-
-//     return (
-//         <>
-//             <Header />
-//             <style>
-//                 {`
-//                     .card {
-//                         width: 300px;
-//                         padding: 20px;
-//                         background: #fff;
-//                         border: 6px solid #000;
-//                         box-shadow: 12px 12px 0 #000;
-//                         transition: transform 0.3s, box-shadow 0.3s;
-//                         margin: 20px;
-//                         margin-left: 2px
-//                     }
-
-//                     .card:hover {
-//                         transform: translate(-5px, -5px);
-//                         box-shadow: 17px 17px 0 #000;
-//                     }
-
-//                     .card__title {
-//                         font-size: 32px;
-//                         font-weight: 1000;
-//                         color: #000;
-//                         text-transform: uppercase;
-//                         margin-bottom: 15px;
-//                         display: block;
-//                         position: relative;
-//                         overflow: hidden;
-//                     }
-
-//                     .card__title::after {
-//                         content: "";
-//                         position: absolute;
-//                         bottom: 0;
-//                         left: 0;
-//                         width: 90%;
-//                         height: 3px;
-//                         background-color: #000;
-//                         transform: translateX(-100%);
-//                         transition: transform 0.3s;
-//                     }
-
-//                     .card:hover .card__title::after {
-//                         transform: translateX(0);
-//                     }
-
-//                     .card__content {
-//                         font-size: 16px;
-//                         line-height: 1.4;
-//                         color: #000;
-//                         margin-bottom: 20px;
-//                         font-weight: 1000;
-//                     }
-
-//                     .card__button {
-//                         border: 3px solid #000;
-//                         background: #000;
-//                         color: #fff;
-//                         padding: 10px;
-//                         font-size: 18px;
-//                         font-weight: bold;
-//                         text-transform: uppercase;
-//                         cursor: pointer;
-//                         position: relative;
-//                         overflow: hidden;
-//                         transition: transform 0.3s;
-//                         width: 100%;
-//                         text-align: center;
-//                     }
-
-//                     .card__button::before {
-//                         content: "Sure?";
-//                         position: absolute;
-//                         top: 0;
-//                         left: 0;
-//                         width: 100%;
-//                         height: 105%;
-//                         background-color: rgba(244, 67, 54);
-//                         color: white;
-//                         display: flex;
-//                         align-items: center;
-//                         justify-content: center;
-//                         transform: translateY(100%);
-//                         transition: transform 0.3s;
-//                     }
-
-//                     .card__button:hover::before {
-//                         transform: translateY(0);
-//                     }
-
-//                     .card__button:active {
-//                         transform: scale(0.95);
-//                     }
-
-//                     .flex-container {
-//                         display: flex;
-//                         flex-wrap: wrap;
-//                         justify-content: space-around;
-//                     }
-//                 `}
-//             </style>
-//             <div className='flex-container'>
-//                 {labs.map((lab) => (
-//                     <div className="card" key={lab._id}>
-//                         <div className="card__title">{lab.laboratoryName}</div>
-//                         <div className="card__content">
-//                             <p>Address: {lab.laboratoryAddress}</p>
-//                             <p>Owner: {lab.contactPersonName}</p>
-//                             <p>Email: {lab.emailAddress}</p>
-//                         </div>
-//                         <button className="card__button" onClick={() => handleTests(lab._id)}>
-//                             Tests
-//                         </button>
-//                     </div>
-//                 ))}
-//             </div>
-//         </>
-//     );
-// }
-
-// export default LabTests;
-
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
 
 const LabTests = () => {
     const [labs, setLabs] = useState([]);
-    const [searchQuery, setSearchQuery] = useState(''); // State for search query
+    const [searchQuery, setSearchQuery] = useState(''); 
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -175,12 +22,12 @@ const LabTests = () => {
         fetchLabs();
     }, []);
 
-    // Function to handle search input
+   
     const handleSearch = (event) => {
         setSearchQuery(event.target.value);
     };
 
-    // Function to filter labs based on the search query
+    
     const filteredLabs = labs.filter(lab =>
         lab.laboratoryName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         lab.laboratoryAddress.toLowerCase().includes(searchQuery.toLowerCase()) ||

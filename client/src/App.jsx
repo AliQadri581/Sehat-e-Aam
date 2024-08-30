@@ -22,6 +22,12 @@ import LaboratoryTests from './UI/pages/laboratoryTests.jsx';
 import TestBookingForm from './UI/pages/TestBookingForm.jsx';
 import Patienttest from './UI/pages/patienttest.jsx';
 import LabBookingReservation from './UI/pages/LabBookingReservation.jsx';
+import MedListing from './UI/pages/MedListing.jsx';
+import MyMeds from './UI/pages/MyMeds.jsx';
+import UpdateMeds from './UI/pages/UpdateMeds.jsx';
+import Pharmacies from './UI/pages/Pharmacies.jsx';
+import PharmMeds from './UI/pages/PharmMeds.jsx';
+import MedsbookingForm from './UI/pages/MedsbookingForm.jsx';
 
 
 
@@ -145,6 +151,34 @@ function App() {
                   </>
               }
           />
+          <Route
+              path='/Pharmacies'
+              element={
+                  <>
+                      <PageTitle title=" Pharmacies |" />
+                      <Pharmacies/>
+                  </>
+              }
+          />
+          <Route
+              path='/PharmMeds/:medId'
+              element={
+                  <>
+                      <PageTitle title=" Pharmacies |" />
+                      <PharmMeds/>
+                  </>
+              }
+          />
+
+            <Route
+              path='/MedsBookingForm/:id'
+              element={
+                  <>
+                      <PageTitle title=" Med Booking |" />
+                      <MedsbookingForm/>
+                  </>
+              }
+           />
 
           <Route
               path='/PatientTests'
@@ -164,7 +198,37 @@ function App() {
                       <LabBookingReservation/>
                   </>
               }
-          />
+            />
+
+            <Route
+              path='/medlisting'
+              element={
+                  <>
+                      <PageTitle title=" listing Medicines |" />
+                      <MedListing/>
+                  </>
+              }
+            />
+
+            <Route
+              path='/MyMeds'
+              element={
+                  <>
+                      <PageTitle title=" My Medicines |" />
+                      <MyMeds/>
+                  </>
+              }
+            />
+
+            <Route
+              path='/UpdateMeds/:id'
+              element={
+                  <>
+                      <PageTitle title=" Update Meds |" />
+                      <UpdateMeds/>
+                  </>
+              }
+            />
 
         <Route
           element={<ProtectedRoute isAuthenticated={user ? false : true} />}

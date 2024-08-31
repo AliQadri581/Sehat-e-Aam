@@ -99,7 +99,7 @@ const MedListing = () => {
                     <img
                         alt=""
                         src="https://media.istockphoto.com/id/1041637696/vector/pharmacy-building-flat-design.jpg?b=1&s=612x612&w=0&k=20&c=3G8eYylVuc5PdH8FdqHNU169MfakTy9NLNsFZ6pHhac="
-                        className="absolute inset-0 h-full w-full object-cover"
+                        className="absolute inset-0 h-full  object-cover"
                     />
                 </div>
             </section>

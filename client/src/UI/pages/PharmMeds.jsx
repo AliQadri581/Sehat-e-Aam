@@ -29,6 +29,7 @@ const PharmMeds = () => {
     return (
         <>
         <Header/>
+        <h1 className='text-5xl font-bold text-center mt-7 text-black '>Medicines</h1>
         <div className="flex flex-wrap justify-center  bg-gray-100 p-4">
             {medicines.length > 0 ? (
                 medicines.map((med) => (

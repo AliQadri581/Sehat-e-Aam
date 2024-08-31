@@ -26,6 +26,7 @@ const Pharmacies = () => {
     return (
         <>
         <Header/>
+        <h1 className='text-5xl font-bold text-center mt-7 text-black '>Pharmacies  </h1>
         <div className="flex flex-wrap justify-center  bg-gray-100 p-4">
             {pharmacies.map((pharmacy) => (
                 <div key={pharmacy._id} className="w-64 m-4 rounded-lg border-2 border-[rgba(244,67,54)] bg-white p-4 text-center shadow-lg dark:bg-gray-800">

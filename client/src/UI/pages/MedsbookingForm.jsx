@@ -108,7 +108,7 @@ const MedsbookingForm = () => {
                         disabled={isBooking} 
                         className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-[rgba(244,67,54)]"
                     >
-                        {isBooking ? 'Booking...' : 'Book'}
+                        {isBooking ? 'Booking...' : 'Order'}
                     </button>
                 </form>
             </div>

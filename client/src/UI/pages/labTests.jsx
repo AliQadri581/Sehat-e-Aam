@@ -154,7 +154,7 @@ const LabTests = () => {
                     }
                 `}
             </style>
-            <h1 className='text-4xl font-bold text-center mt-7 text-black '>Lab Test</h1>
+            <h1 className='text-5xl font-bold text-center mt-7 text-black '>Laboratories </h1>
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
                 <input
                     type="text"
